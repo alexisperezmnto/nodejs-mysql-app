@@ -20,6 +20,8 @@ router.post('/add', async (req, res) => {
 	// ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
 	// Para evitar el error que aparece "UnhandledPromiseRejectionWarning"
 
+	req.flash('success', 'Link saved successfully!');
+
 	res.redirect('/links');
 });
 
@@ -31,6 +33,7 @@ router.get('/', async (req, res) => {
 router.get('/delete/:id', async (req, res) => {
 	const { id } = req.params;
 	await pool.query('DELETE FROM links WHERE id = ?', [id]);
+	req.flash('success', 'Link Removed Successfully');
 	res.redirect('/links');
 });
 
@@ -50,7 +53,7 @@ router.post('/edit/:id', async (req, res) => {
 	};
 
 	await pool.query('UPDATE links set ? WHERE id = ?', [newLink, id]);
-
+	req.flash('success', 'Link Updated Successfully');
 	res.redirect('/links');
 });
 
